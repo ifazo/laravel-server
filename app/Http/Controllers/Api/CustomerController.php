@@ -1,22 +1,33 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\V1\CustomerCollection;
-use App\Http\Resources\V1\CustomerResource;
 use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Resources\CustomerCollection;
+use App\Http\Resources\CustomerResource;
+use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new CustomerCollection(Customer::paginate());
+        $queryItems = Customer::query();
+
+        if ($request->has("name")) {
+            $queryItems->where("name", "like", "%" . $request->name . "%");
+        }
+        if ($request->has("email")) {
+            $queryItems->orWhere("email", "like", "%" . $request->email . "%");
+        }
+
+        return new CustomerCollection($queryItems->paginate(10));
+
     }
 
     /**
@@ -32,7 +43,7 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomerRequest $request)
     {
-        //
+        return new CustomerResource(Customer::create($request->all()));
     }
 
     /**

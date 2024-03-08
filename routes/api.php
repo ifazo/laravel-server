@@ -1,7 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\V1\CustomerController;
-use App\Http\Controllers\Api\V1\InvoiceController;
+use App\Http\Controllers\Api\CustomerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,7 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group(['prefix'=> 'v1'], function () {
-    Route::apiResource('customers', CustomerController::class);
-    Route::apiResource('invoices', InvoiceController::class);
-});
+Route::get('customers', [CustomerController::class, 'index']);
+Route::post('customers', [CustomerController::class, 'store']);
+Route::get('customers/{customer}', [CustomerController::class, 'show']);
+Route::put('customers/{customer}', [CustomerController::class, 'update']);
+Route::delete('customers/{customer}', [CustomerController::class, 'destroy']);
+
+// Route::group(['prefix'=> 'v1'], function () {
+//     Route::apiResource('customers', CustomerController::class);
+//     Route::apiResource('invoices', InvoiceController::class);
+// });
