@@ -2,18 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
+use App\Http\Resources\ProductCollection;
+use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return new ProductController(Product::paginate(10));
+        $queryItems = Product::query();
+
+        if ($queryItems) {
+            if ($request->has('name')) {
+                $queryItems->where("name", "like", "%" . $request->name . "%");
+            } else if ($request->has("description")) {
+                $queryItems->orWhere("description", "like", "%" . $request->description . "%");
+            } else {
+                return new ProductCollection($queryItems->paginate(10));
+            }
+        } else {
+            return new ProductCollection(Product::paginate(10));
+        }
     }
 
     /**
@@ -29,7 +44,7 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        return new ProductResource(Product::create($request->all()));
     }
 
     /**
@@ -37,7 +52,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return $product;
     }
 
     /**
@@ -53,7 +68,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->all());
     }
 
     /**
@@ -61,6 +76,6 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
     }
 }

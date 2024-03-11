@@ -23,13 +23,13 @@ class StoreCustomerRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
+            'name' => ['required'],
             'type' => ['required', Rule::in(['I', 'B'])],
             'email' => ['required', 'email'],
-            'address' => 'required',
-            'city' => 'required',
-            'state' => 'required',
-            'postalCode' => 'required',
+            'address' => ['required'],
+            'city' => ['required'],
+            'state' => ['required'],
+            'postalCode' => ['required'],
         ];
     }
 

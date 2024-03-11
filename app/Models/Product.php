@@ -11,9 +11,11 @@ class Product extends Model
 
     protected $fillable = [
         'name',
+        'image',
         'description',
         'price',
         'stock',
+        'category_id'
     ];
 
     public function reviews() {

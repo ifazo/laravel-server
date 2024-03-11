@@ -11,7 +11,7 @@ class UpdateProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,11 +21,20 @@ class UpdateProductRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => ['string', 'max:255'],
-            'description' => ['string'],
-            'price' => ['numeric', 'min:0'],
-            'stock' => ['integer', 'min:0'],
-        ];
+            return [
+                'name' => ['sometimes', 'string', 'max:255'],
+                'image' => ['sometimes', 'string'],
+                'description' => ['sometimes', 'string'],
+                'price' => ['sometimes', 'numeric', 'min:0'],
+                'stock' => ['sometimes', 'integer', 'min:0'],
+                'categoryId' => ['sometimes', 'string', 'max:255']
+            ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'category_id' => $this->categoryId
+        ]);
     }
 }

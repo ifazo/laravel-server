@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
@@ -21,12 +21,11 @@ class CustomerController extends Controller
 
         if ($request->has("name")) {
             $queryItems->where("name", "like", "%" . $request->name . "%");
-        }
-        if ($request->has("email")) {
+        } else if ($request->has("email")) {
             $queryItems->orWhere("email", "like", "%" . $request->email . "%");
+        } else {
+            return new CustomerCollection($queryItems->paginate(10));
         }
-
-        return new CustomerCollection($queryItems->paginate(10));
 
     }
 

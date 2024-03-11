@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\InvoiceCollection;
 use App\Models\Invoice;
 use App\Http\Requests\StoreInvoiceRequest;
 use App\Http\Requests\UpdateInvoiceRequest;
@@ -16,7 +15,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return new InvoiceCollection(Invoice::paginate());
+        return Invoice::all();
     }
 
     /**
@@ -24,7 +23,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
