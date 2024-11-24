@@ -28,19 +28,15 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy Laravel application files
+# Copy application files (without .env)
 COPY . /var/www/html
 
-# Install Laravel dependencies
-RUN composer install
+# Install dependencies
+RUN composer install --no-dev --optimize-autoloader
 
-# Set appropriate permissions
+# Set permissions
 RUN chown -R www-data:www-data /var/www/html
-RUN chmod -R 755 /var/www/html
 RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Generate Laravel application key
-RUN php artisan key:generate
 
 # Update Apache configuration to serve the public directory
 RUN sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
