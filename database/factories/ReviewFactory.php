@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,8 +20,9 @@ class ReviewFactory extends Factory
     {
         return [
             "product_id" => Product::factory(),
+            "user_id" => User::factory(),
             "rating" => $this->faker->randomFloat(1, 1, 5),
-            "review" => $this->faker->text(),
+            "comment" => $this->faker->text(),
         ];
     }
 }

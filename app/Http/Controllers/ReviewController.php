@@ -2,18 +2,36 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ReviewResource;
 use App\Models\Review;
 use App\Http\Requests\StoreReviewRequest;
 use App\Http\Requests\UpdateReviewRequest;
+use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $queryItems = Review::query();
+
+        if ($request->has('productId')) {
+            $queryItems->where('product_id', '=', $request->productId);
+        } 
+        else {
+            return response()->json([
+                'error' => 'The productId parameter is required.'
+            ], 400);
+        }
+
+        $reviews = $queryItems->get();
+
+        if ($reviews->isEmpty()) {
+            return response()->json([]);
+        }
+        return ReviewResource::collection($reviews);
     }
 
     /**

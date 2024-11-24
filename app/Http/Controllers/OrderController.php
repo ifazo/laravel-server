@@ -6,15 +6,31 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return OrderResource::collection(Order::all());
+        $queryItems = Order::query();
+
+        if ($request->has('userId')) {
+            $queryItems->where('user_id', '=', $request->userId);
+        } else {
+            return response()->json([
+                'error' => 'The userId parameter is required.'
+            ], 400);
+        }
+
+        $orders = $queryItems->get();
+
+        if ($orders->isEmpty()) {
+            return response()->json([]);
+        }
+        return OrderResource::collection($orders);
     }
 
     /**

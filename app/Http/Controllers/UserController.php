@@ -6,15 +6,24 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::all());
+        $queryItems = User::query();
+
+        if ($request->has('name')) {
+            $queryItems->where('name', 'like', '%' . $request->name . '%');
+        }
+        if ($request->has('role')) {
+            $queryItems->where('role', 'like', '%' . $request->role . '%');
+        }
+        return UserResource::collection($queryItems->get());
     }
 
     /**
