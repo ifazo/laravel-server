@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
@@ -13,7 +14,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Order::all();
+        return OrderResource::collection(Order::all());
     }
 
     /**
@@ -37,7 +38,7 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        return $order;
+        return new OrderResource($order);
     }
 
     /**
