@@ -15,17 +15,17 @@ class ProductSeeder extends Seeder
     {
         Product::factory()
         ->count(10)
-        ->haeReviews(5)
+        ->hasReviews(5)
         ->create();
 
         Product::factory()
         ->count(10)
-        ->haeReviews(3)
+        ->hasReviews(3)
         ->create();
 
         Product::factory()
         ->count(10)
-        ->haeReviews(1)
+        ->hasReviews(1)
         ->create();
 
         Product::factory()

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use App\Models\Review;
+use App\Http\Requests\StoreReviewRequest;
+use App\Http\Requests\UpdateReviewRequest;
 
-class UserController extends Controller
+class ReviewController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return User::all();
+        //
     }
 
     /**
@@ -27,7 +27,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreReviewRequest $request)
     {
         //
     }
@@ -35,15 +35,15 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(Review $review)
     {
-        return $user;
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Review $review)
     {
         //
     }
@@ -51,7 +51,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(UpdateReviewRequest $request, Review $review)
     {
         //
     }
@@ -59,7 +59,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Review $review)
     {
         //
     }
