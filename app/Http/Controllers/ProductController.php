@@ -21,8 +21,8 @@ class ProductController extends Controller
             $queryItems->where('name', 'like', '%' . $request->name . '%');
         }
 
-        if ($request->has('description')) {
-            $queryItems->where('description', 'like', '%' . $request->description . '%');
+        if ($request->has('categoryId')) {
+            $queryItems->where('category_id', '=', $request->categoryId);
         }
 
         if ($request->has('min_price')) {
