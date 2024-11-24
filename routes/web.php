@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -8,4 +10,14 @@ Route::get('/', function () {
 
 Route::get('/api', function () {
     echo "<h1>Server api is running successfully!</h1>";
+});
+
+Route::group((['prefix' => 'api']), function () {
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('orders', OrderController::class);
+    // Route::get('/users', 'UserController@index');
+    // Route::post('/users', 'UserController@store');
+    // Route::get('/users/{user}', 'UserController@show');
+    // Route::put('/users/{user}', 'UserController@update');
+    // Route::delete('/users/{user}', 'UserController@destroy');
 });
