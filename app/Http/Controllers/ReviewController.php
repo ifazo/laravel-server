@@ -19,8 +19,7 @@ class ReviewController extends Controller
 
         if ($request->has('productId')) {
             $queryItems->where('product_id', '=', $request->productId);
-        } 
-        else {
+        } else {
             return response()->json([
                 'error' => 'The productId parameter is required.'
             ], 400);
@@ -29,9 +28,15 @@ class ReviewController extends Controller
         $reviews = $queryItems->get();
 
         if ($reviews->isEmpty()) {
-            return response()->json([]);
+            return response()->json(['message' => 'No reviews found for this product.']);
         }
-        return ReviewResource::collection($reviews);
+        return response()->json(
+            [
+                'message' => 'Reviews of this product found.',
+                'data' => ReviewResource::collection($reviews)
+            ],
+            200
+        );
     }
 
     /**
@@ -47,7 +52,17 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request)
     {
-        //
+        $validated = $request->validated();
+
+        $review = Review::create($validated);
+
+        return response()->json(
+            [
+                'message' => 'Review created successfully.',
+                'data' => new ReviewResource($review)
+            ],
+            201
+        );
     }
 
     /**
@@ -55,7 +70,17 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        return new ReviewResource($review);
+        if (!$review) {
+            return response()->json(['message' => 'Review not found.']);
+        }
+
+        return response()->json(
+            [
+                'message' => 'Review retrieved successfully.',
+                'data' => new ReviewResource($review)
+            ],
+            200
+        );
     }
 
     /**
@@ -71,7 +96,17 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, Review $review)
     {
-        //
+        $validated = $request->validated();
+
+        $review->update($validated);
+
+        return response()->json(
+            [
+                'message' => 'Review updated successfully.',
+                'data' => new ReviewResource($review)
+            ],
+            200
+        );
     }
 
     /**
@@ -79,6 +114,8 @@ class ReviewController extends Controller
      */
     public function destroy(Review $review)
     {
-        //
+        $review->delete();
+
+        return response()->json(['message' => 'Review deleted successfully.'], 200);
     }
 }

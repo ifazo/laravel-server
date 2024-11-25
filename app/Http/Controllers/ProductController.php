@@ -39,7 +39,13 @@ class ProductController extends Controller
             $queryItems->where('rating', '<=', $request->max_rating);
         }
 
-        return ProductResource::collection($queryItems->paginate(10));
+        return response()->json(
+            [
+                'message' => 'Products retrieved successfully.',
+                'data' => ProductResource::collection($queryItems->paginate(10))
+            ],
+            200
+        );
     }
 
 
@@ -56,7 +62,17 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        $validatedData = $request->validated();
+
+        $product = Product::create($validatedData);
+
+        return response()->json(
+            [
+                'message' => 'Product created successfully.',
+                'data' => new ProductResource($product)
+            ],
+            201
+        );
     }
 
     /**
@@ -64,7 +80,17 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return new ProductResource($product);
+        if (!$product) {
+            return response()->json(['message' => 'Product not found.'], 404);
+        }
+
+        return response()->json(
+            [
+                'message' => 'Product retrieved successfully.',
+                'data' => new ProductResource($product)
+            ],
+            200
+        );
     }
 
     /**
@@ -80,7 +106,17 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $validatedData = $request->validated();
+
+        $product->update($validatedData);
+
+        return response()->json(
+            [
+                'message' => 'Product updated successfully.',
+                'data' => new ProductResource($product)
+            ],
+            200
+        );
     }
 
     /**
@@ -88,6 +124,8 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+
+        return response()->json(['message' => 'Product deleted successfully.'], 200);
     }
 }
