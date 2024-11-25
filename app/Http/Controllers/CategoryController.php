@@ -14,7 +14,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return CategoryResource::collection(Category::all());
+        return response()->json([
+            'message' => 'Categories retrieved successfully.',
+            'data' => CategoryResource::collection(Category::all())
+        ], 200);
     }
 
     /**
@@ -30,9 +33,18 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $category = Category::create($request->validated());
+        $validatedData = $request->validate([
+            'slug' => 'required|string|max:255|unique:categories,slug',
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
 
-        return new CategoryResource($category);
+        $category = Category::create($validatedData);
+
+        return response()->json([
+            'message' => 'Category created successfully.',
+            'data' => new CategoryResource($category)
+        ], 201);
     }
 
     /**
@@ -40,7 +52,14 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return new CategoryResource ($category);
+        if (!$category) {
+            return response()->json(['message' => 'Category not found.'], 404);
+        }
+    
+        return response()->json([
+            'message' => 'Category retrieved successfully.',
+            'data' => new CategoryResource($category)
+        ], 200);
     }
 
     /**
@@ -56,7 +75,18 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        //
+        $validatedData = $request->validate([
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
+            'name' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $category->update($validatedData);
+
+        return response()->json([
+            'message' => 'Category updated successfully.',
+            'data' => new CategoryResource($category)
+        ], 200);
     }
 
     /**
@@ -64,6 +94,8 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $category->delete();
+
+        return response()->json(['message' => 'Category deleted successfully.'], 200);
     }
 }
