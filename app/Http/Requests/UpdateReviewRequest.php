@@ -23,6 +23,7 @@ class UpdateReviewRequest extends FormRequest
     {
         return [
             'product_id' => 'nullable|exists:products,id',
+            'user_id' => 'nullable|exists:users,id',
             'rating' => 'nullable|numeric|min:0|max:5',
             'comment' => 'nullable|string',
         ];
