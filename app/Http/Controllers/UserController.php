@@ -23,7 +23,10 @@ class UserController extends Controller
         if ($request->has('role')) {
             $queryItems->where('role', 'like', '%' . $request->role . '%');
         }
-        return UserResource::collection($queryItems->get());
+        return response()->json([
+            'message' => 'Users retrieved successfully.',
+            'data' => UserResource::collection($queryItems->get())
+        ], 200);
     }
 
     /**
@@ -41,7 +44,10 @@ class UserController extends Controller
     {
          $user = User::create($request->validated());
 
-         return new UserResource($user);
+         return response()->json([
+             'message' => 'User created successfully.',
+             'data' => new UserResource($user)
+         ], 201);
     }
 
     /**
@@ -49,7 +55,14 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return new UserResource($user);
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'User retrieved successfully.',
+            'data' => new UserResource($user)
+        ], 200);
     }
 
     /**
@@ -67,7 +80,10 @@ class UserController extends Controller
     {
         $user->update($request->validated());
 
-        return new UserResource($user);
+        return response()->json([
+            'message' => 'User updated successfully.',
+            'data' => new UserResource($user)
+        ], 200);
     }
 
     /**

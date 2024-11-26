@@ -52,9 +52,8 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request)
     {
-        $validated = $request->validated();
 
-        $review = Review::create($validated);
+        $review = Review::create($request->validated());
 
         return response()->json(
             [
@@ -96,9 +95,8 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, Review $review)
     {
-        $validated = $request->validated();
 
-        $review->update($validated);
+        $review->update($request->validated());
 
         return response()->json(
             [

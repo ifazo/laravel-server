@@ -75,13 +75,8 @@ class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Category $category)
     {
-        $validatedData = $request->validate([
-            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $category->id,
-            'name' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-        ]);
 
-        $category->update($validatedData);
+        $category->update($request->validated());
 
         return response()->json([
             'message' => 'Category updated successfully.',
