@@ -23,11 +23,11 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'image' => ['string', 'max:255'],
-            'role' => ['required', Rule::in(['user', 'business', 'admin'])],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6'],
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|string|max:255',
+            'role' => 'required|in:user,business,admin',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'password' => 'required|string|min:6',
         ];
     }
 }

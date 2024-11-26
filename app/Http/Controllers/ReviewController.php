@@ -69,10 +69,6 @@ class ReviewController extends Controller
      */
     public function show(Review $review)
     {
-        if (!$review) {
-            return response()->json(['message' => 'Review not found.']);
-        }
-
         return response()->json(
             [
                 'message' => 'Review retrieved successfully.',

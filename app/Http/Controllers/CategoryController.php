@@ -33,13 +33,7 @@ class CategoryController extends Controller
      */
     public function store(StoreCategoryRequest $request)
     {
-        $validatedData = $request->validate([
-            'slug' => 'required|string|max:255|unique:categories,slug',
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-        ]);
-
-        $category = Category::create($validatedData);
+        $category = Category::create($request->validated());
 
         return response()->json([
             'message' => 'Category created successfully.',
@@ -52,10 +46,6 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        if (!$category) {
-            return response()->json(['message' => 'Category not found.'], 404);
-        }
-    
         return response()->json([
             'message' => 'Category retrieved successfully.',
             'data' => new CategoryResource($category)

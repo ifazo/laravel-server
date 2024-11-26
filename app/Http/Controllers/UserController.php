@@ -20,9 +20,15 @@ class UserController extends Controller
         if ($request->has('name')) {
             $queryItems->where('name', 'like', '%' . $request->name . '%');
         }
+        
+        if ($request->has('email')) {
+            $queryItems->where('email', 'like', '%' . $request->email . '%');
+        }
+
         if ($request->has('role')) {
             $queryItems->where('role', 'like', '%' . $request->role . '%');
         }
+
         return response()->json([
             'message' => 'Users retrieved successfully.',
             'data' => UserResource::collection($queryItems->get())
@@ -42,12 +48,12 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-         $user = User::create($request->validated());
+        $user = User::create($request->validated());
 
-         return response()->json([
-             'message' => 'User created successfully.',
-             'data' => new UserResource($user)
-         ], 201);
+        return response()->json([
+            'message' => 'User created successfully.',
+            'data' => new UserResource($user)
+        ], 201);
     }
 
     /**
@@ -55,10 +61,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if (!$user) {
-            return response()->json(['message' => 'User not found.'], 404);
-        }
-
         return response()->json([
             'message' => 'User retrieved successfully.',
             'data' => new UserResource($user)
@@ -91,8 +93,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-         $user->delete();
+        $user->delete();
 
-         return response()->json(['message' => 'User deleted successfully'], 200);
+        return response()->json(['message' => 'User deleted successfully'], 200);
     }
 }

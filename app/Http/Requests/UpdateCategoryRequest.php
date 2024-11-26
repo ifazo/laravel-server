@@ -22,8 +22,8 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slug' => ['nullable', 'string', 'max:255', 'regex:/^[a-z0-9]+(?:-[a-z0-9]+)*$/'],
             'name' => 'nullable|string|max:255',
+            'slug' => 'required|string|max:255|unique:categories,slug,' . $this->category->id, 
             'description' => 'nullable|string',
         ];
     }
