@@ -67,15 +67,18 @@ class ReviewController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Review $review)
+    public function show($id)
     {
-        return response()->json(
-            [
-                'message' => 'Review retrieved successfully.',
-                'data' => new ReviewResource($review)
-            ],
-            200
-        );
+        $review = Review::find($id);
+
+        if (!$review) {
+            return response()->json(['message' => 'Review not found.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Review retrieved successfully.',
+            'data' => new ReviewResource($review)
+        ], 200);
     }
 
     /**
