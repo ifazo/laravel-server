@@ -19,10 +19,12 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            "product_id" => Product::factory(),
+            "rating" => $this->faker->numberBetween(1, 5),
+            "review" => $this->faker->text(),
             "user_id" => User::factory(),
-            "rating" => $this->faker->randomFloat(1, 1, 5),
-            "comment" => $this->faker->text(),
+            "product_id" => Product::factory(),
+            "created_at" => now(),
+            "updated_at" => now(),
         ];
     }
 }

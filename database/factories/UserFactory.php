@@ -23,31 +23,32 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $role = $this->faker->randomElement(['user', 'business', 'admin']);
+        $role = $this->faker->randomElement(['buyer', 'seller', 'admin']);
         $name = match ($role) {
-            'user' => $this->faker->name(),
-            'business' => $this->faker->company(),
+            'buyer' => $this->faker->name(),
+            'seller' => $this->faker->company(),
             'admin' => 'Admin',
         };
 
         return [
             'name' => $name,
-            'role' => $role,
-            'image' => $this->faker->imageUrl(),
+            'image' => $this->faker->optional()->imageUrl(),
             'email' => $this->faker->unique()->safeEmail,
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'remember_token' => Str::random(10),
+            'role' => $role,
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 
     /**
      * Indicate that the model's email address should be unverified.
      */
-    public function unverified(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'email_verified_at' => null,
-        ]);
-    }
+    // public function unverified(): static
+    // {
+    //     return $this->state(fn(array $attributes) => [
+    //         'email_verified_at' => null,
+    //     ]);
+    // }
 }

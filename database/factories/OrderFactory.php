@@ -17,13 +17,25 @@ class OrderFactory extends Factory
      */
     public function definition(): array
     {
-        $status = $this->faker->randomElement(["pending", "processing", "completed"]);
+        $status = $this->faker->randomElement(["pending", "processing", "completed", "cancelled"]);
 
         return [
-            "user_id" => User::factory(),
+            "products" => json_encode([
+                [
+                    "product_id" => $this->faker->uuid(),
+                    "quantity" => $this->faker->numberBetween(1, 5),
+                    "price" => $this->faker->numberBetween(100, 1000),
+                ],
+                [
+                    "product_id" => $this->faker->uuid(),
+                    "quantity" => $this->faker->numberBetween(1, 5),
+                    "price" => $this->faker->numberBetween(100, 1000),
+                ],
+            ]),
+            "total_amount" => $this->faker->numberBetween(100, 1000),
             "status" => $status,
-            "amount" => $this->faker->numberBetween(100, 1000),
-            "payment_date" => $status === "completed" ? $this->faker->dateTime() : null,
+            "session_id" => $this->faker->uuid(),
+            "user_id" => User::factory(),
         ];
     }
 }

@@ -19,12 +19,14 @@ class ProductFactory extends Factory
     {
         return [
             'name' => $this->faker->name,
-            'category_id' => Category::factory(),
             'image' => $this->faker->imageUrl(),
             'description' => $this->faker->text(),
             'price' => $this->faker->randomFloat(2, 1, 1000),
             'rating' => $this->faker->randomFloat(1, 1, 5),
             'stock' => $this->faker->numberBetween(1, 100),
+            'category_id' => Category::factory(),
+            'created_at' => now(),
+            'updated_at' => now(),
         ];
     }
 }

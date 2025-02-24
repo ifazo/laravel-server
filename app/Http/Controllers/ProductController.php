@@ -40,7 +40,7 @@ class ProductController extends Controller
         }
 
         return response()->json(
-            [
+            [   'status' => true,
                 'message' => 'Products retrieved successfully.',
                 'data' => ProductResource::collection($queryItems->paginate(10))
             ],
@@ -67,6 +67,7 @@ class ProductController extends Controller
 
         return response()->json(
             [
+                'status' => true,
                 'message' => 'Product created successfully.',
                 'data' => new ProductResource($product)
             ],
@@ -86,6 +87,7 @@ class ProductController extends Controller
         }
     
         return response()->json([
+            'status' => true,
             'message' => 'Product retrieved successfully.',
             'data' => new ProductResource($product)
         ], 200);
@@ -109,11 +111,10 @@ class ProductController extends Controller
 
         return response()->json(
             [
+                'status' => true,
                 'message' => 'Product updated successfully.',
                 'data' => new ProductResource($product)
-            ],
-            200
-        );
+            ], 200);
     }
 
     /**
@@ -123,6 +124,10 @@ class ProductController extends Controller
     {
         $product->delete();
 
-        return response()->json(['message' => 'Product deleted successfully.'], 200);
+        return response()->json([
+            'status' => true,
+            'message' => 'Product deleted successfully.',
+            'data' => new ProductResource($product)
+        ], 200);
     }
 }

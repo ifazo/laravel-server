@@ -10,7 +10,7 @@ class Product extends Model
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 
-    protected $fillable = ['name', 'category_id', 'image', 'description', 'price', 'rating', 'stock'];
+    protected $fillable = ['name', 'image', 'description', 'price', 'rating', 'stock', 'category_id' ];
 
     public function reviews()
     {

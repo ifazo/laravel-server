@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test',
             'image' => 'test.img',
-            'role' => 'user',
             'email' => 'test@mail.com',
             'password' => bcrypt('123456'),
+            'role' => 'buyer',
         ]);
 
         $this->call([
