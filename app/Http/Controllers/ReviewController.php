@@ -21,22 +21,25 @@ class ReviewController extends Controller
             $queryItems->where('product_id', '=', $request->productId);
         } else {
             return response()->json([
-                'error' => 'The productId parameter is required.'
+                'success' => false,
+                'message' => 'The productId parameter is required.'
             ], 400);
         }
 
         $reviews = $queryItems->get();
 
         if ($reviews->isEmpty()) {
-            return response()->json(['message' => 'No reviews found for this product.']);
+            return response()->json([
+                'success' => false,
+                'message' => 'No reviews found for this product.'
+            ], 404);
         }
         return response()->json(
             [
+                'success' => true,
                 'message' => 'Reviews of this product found.',
                 'data' => ReviewResource::collection($reviews)
-            ],
-            200
-        );
+            ], 200);
     }
 
     /**
@@ -57,6 +60,7 @@ class ReviewController extends Controller
 
         return response()->json(
             [
+                'success' => true,
                 'message' => 'Review created successfully.',
                 'data' => new ReviewResource($review)
             ],
@@ -72,10 +76,14 @@ class ReviewController extends Controller
         $review = Review::find($id);
 
         if (!$review) {
-            return response()->json(['message' => 'Review not found.'], 404);
+            return response()->json([
+                'success' => false,
+                'message' => 'Review not found.'
+            ], 404);
         }
 
         return response()->json([
+            'success' => true,
             'message' => 'Review retrieved successfully.',
             'data' => new ReviewResource($review)
         ], 200);
@@ -99,11 +107,10 @@ class ReviewController extends Controller
 
         return response()->json(
             [
+                'success' => true,
                 'message' => 'Review updated successfully.',
                 'data' => new ReviewResource($review)
-            ],
-            200
-        );
+            ], 200);
     }
 
     /**
@@ -113,6 +120,10 @@ class ReviewController extends Controller
     {
         $review->delete();
 
-        return response()->json(['message' => 'Review deleted successfully.'], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'Review deleted successfully.',
+            'data' => new ReviewResource($review)
+        ], 200);
     }
 }

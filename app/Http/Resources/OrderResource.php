@@ -16,10 +16,11 @@ class OrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'userId' => $this->user_id,
+            'products' => $this->products,
+            'totalAmount' => $this->total_amount,
             'status' => $this->status,
-            'amount' => $this->amount,
-            'paymentDate' => $this->payment_date,
+            'sessionId' => $this->session_id,
+            'userId' => $this->user_id,
         ];
     }
 }

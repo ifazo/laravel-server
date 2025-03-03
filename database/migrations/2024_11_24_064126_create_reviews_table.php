@@ -14,8 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->float('rating', 2);
             $table->text('review');
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

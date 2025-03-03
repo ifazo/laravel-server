@@ -23,7 +23,8 @@ class UpdateCategoryRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug,' . $this->category->id, 
+            'slug' => 'nullable|string|max:255|unique:categories,slug,' . $this->category->id, 
+            'image' => 'nullable|string|max:255',
             'description' => 'nullable|string',
         ];
     }

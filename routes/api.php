@@ -13,7 +13,7 @@ Route::get('/', function () {
     return response()->json([
         'success' => true,
         'message' => 'Laravel Server api is running successfully!',
-    ]);
+    ], 200);
 });
 
 Route::post('/login', action: [AuthController::class, 'login']);
@@ -22,6 +22,7 @@ Route::get('/profile', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::post('/users', [UserController::class, 'store']);
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::get('/categories', [CategoryController::class, 'index']);
@@ -32,9 +33,9 @@ Route::get('/reviews', [ReviewController::class, 'index']);
 Route::get('/reviews/{id}', [ReviewController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('users', UserController::class)->except('index', 'show');
-    Route::apiResource('categories', CategoryController::class)->except('index', 'show');
-    Route::apiResource('products', ProductController::class)->except('index', 'show');
-    Route::apiResource('reviews', ReviewController::class)->except('index', 'show');
-    Route::apiResource('orders', OrderController::class);
+        Route::apiResource('users', UserController::class)->except('store', 'index', 'show');
+        Route::apiResource('categories', CategoryController::class)->except('index', 'show');
+        Route::apiResource('products', ProductController::class)->except('index', 'show');
+        Route::apiResource('reviews', ReviewController::class)->except('index', 'show');
+        Route::apiResource('orders', OrderController::class);
 });

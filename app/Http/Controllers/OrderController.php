@@ -21,7 +21,8 @@ class OrderController extends Controller
             $queryItems->where('user_id', '=', $request->userId);
         } else {
             return response()->json([
-                'error' => 'The userId parameter is required.'
+                'success' => false,
+                'message' => 'The userId parameter is required.'
             ], 400);
         }
 

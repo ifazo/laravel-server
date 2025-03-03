@@ -16,19 +16,19 @@ class AuthController extends Controller
         ]);
 
         if (!Auth::attempt($credentials)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
         }
 
         $user = Auth::user();
         $token = $user->createToken('API Token')->plainTextToken;
 
-        return response()->json(['token' => $token, 'user' => $user]);
+        return response()->json(['success' => true, 'message' => 'Logged in successfully', 'token' => $token], 200);
     }
 
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return response()->json(['message' => 'Logged out']);
+        return response()->json(['success' => true, 'message' => 'Logged out successfully'], 200);
     }
 
 

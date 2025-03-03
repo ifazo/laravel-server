@@ -20,7 +20,7 @@ class UserController extends Controller
         if ($request->has('name')) {
             $queryItems->where('name', 'like', '%' . $request->name . '%');
         }
-        
+
         if ($request->has('email')) {
             $queryItems->where('email', 'like', '%' . $request->email . '%');
         }
@@ -30,6 +30,7 @@ class UserController extends Controller
         }
 
         return response()->json([
+            'success' => true,
             'message' => 'Users retrieved successfully.',
             'data' => UserResource::collection($queryItems->get())
         ], 200);
@@ -51,6 +52,7 @@ class UserController extends Controller
         $user = User::create($request->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'User created successfully.',
             'data' => new UserResource($user)
         ], 201);
@@ -68,6 +70,7 @@ class UserController extends Controller
         }
 
         return response()->json([
+            'success' => true,
             'message' => 'User retrieved successfully.',
             'data' => new UserResource($user)
         ], 200);
@@ -89,6 +92,7 @@ class UserController extends Controller
         $user->update($request->validated());
 
         return response()->json([
+            'success' => true,
             'message' => 'User updated successfully.',
             'data' => new UserResource($user)
         ], 200);
@@ -101,6 +105,10 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return response()->json(['message' => 'User deleted successfully'], 200);
+        return response()->json([
+            'success' => true,
+            'message' => 'User deleted successfully',
+            'data' => new UserResource($user)
+        ], 200);
     }
 }
